@@ -1,35 +1,25 @@
 const { Telegraf } = require('telegraf');
+const http = require('http');
 
-// Render akan mengambil token dari menu Environment Variables yang kita isi nanti
+// 1. Inisialisasi Bot dengan Token dari Secrets
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// Perintah /start
-bot.start((ctx) => {
-    ctx.reply(`Halo ${ctx.from.first_name}! Bot kamu sudah berhasil berjalan di Render.`);
-});
+// 2. Fitur Bot Sederhana
+bot.start((ctx) => ctx.reply('Halo! Bot kamu sudah aktif di Replit.'));
+bot.help((ctx) => ctx.reply('Ketik sesuatu untuk tes respon bot.'));
+bot.on('text', (ctx) => ctx.reply(`Respon: ${ctx.message.text}`));
 
-// Perintah /help
-bot.help((ctx) => ctx.reply('Ada yang bisa saya bantu? Silakan kirim pesan apa saja.'));
-
-// Respon otomatis jika ada teks "halo"
-bot.hears('halo', (ctx) => ctx.reply('Halo juga! Selamat datang.'));
-
-// Menangkap semua pesan teks
-bot.on('text', (ctx) => {
-    const pesan = ctx.message.text;
-    ctx.reply(`Kamu mengirim pesan: ${pesan}`);
-});
-
-// Menjalankan bot
+// 3. Menjalankan Bot
 bot.launch().then(() => {
-    console.log('Bot sedang berjalan...');
+    console.log("✅ Bot sedang jalan...");
 });
 
-// Penanganan error ringan agar bot tidak crash
-bot.catch((err, ctx) => {
-    console.log(`Ooops, encountered an error for ${ctx.updateType}`, err);
-});
+// 4. Server Tambahan (Agar Replit memberikan URL untuk di-ping)
+http.createServer((req, res) => {
+    res.write("Bot is alive!");
+    res.end();
+}).listen(8080);
 
-// Enable graceful stop
+// Stop bot dengan aman
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));

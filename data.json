@@ -1,0 +1,21 @@
+{
+  "premiumUsers": {},
+  "premiumGroups": [],
+  "rooms": {
+    "-1003145178234": {
+      "tempLW": "SALDO PEMAIN : (0)",
+      "history": [],
+      "bets": {
+        "K": {},
+        "B": {}
+      },
+      "state": {
+        "step": 0,
+        "mode": "",
+        "m1": "",
+        "m2": "",
+        "m3": ""
+      }
+    }
+  }
+}
